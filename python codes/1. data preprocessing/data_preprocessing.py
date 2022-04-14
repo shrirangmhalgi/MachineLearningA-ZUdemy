@@ -57,10 +57,28 @@ print(y)
 # recommended size of split is 80 train 20 test
 # random_state = 1 is fixing the seed to get same result (not required)
 from sklearn.model_selection import train_test_split
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
 print(x_train)
 print(x_test)
 print(y_train) 
 print(y_test)
 
 # feature scaling
+# some features are dominated hence to reduce domination we use feature scaling
+# used for certain machine learning 
+# 2 feature scaling techniques are 
+# 1. standarization -> (x - mean(x)) / standard_deviation(x) -> put the values of all the features between -3 and +3
+# 2. normalization -> (x - min(x)) / (max(x) - min(x)) -> put the values of all the features between 0 and +1
+# what is prefered? Normalization is recommended when you have normal distribution in most of your features. Standardisation works all the time. 
+# recommended to use standardisation as it works all the time
+# apply the scaling on x_train and x_test
+# do we have to apply feature scaling to the dummy variables (categorical/one hot encoded variables) in the dataset?
+# NO. we need all the values of the features in the same range. standardization standardises values mean = 0 and stardard deviation is 1 unit variance (between -3 and +3) our dummmy variables are between the range, hence Standarization will make it worse as we will lose on the interpretation of the variables 
+from sklearn.preprocessing import StandardScaler
+standard_scaler = StandardScaler()
+x_train[:, 3:] = standard_scaler.fit_transform(x_train[:, 3:])
+# features should be scaled by the same scaler which was used upon the train data.. no new scaler class is needed
+# the ml model will be trained using the scaler hence to make the scaler ad predictions congruent, we need to use the same scaler which was used to train the model
+x_test[:, 3:] = standard_scaler.transform(x_test[:, 3:])
+print(x_train)
+print(x_test)
