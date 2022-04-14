@@ -68,3 +68,11 @@ plt.title('Salary vs Experience (Test set)')
 plt.xlabel('Years of Experience')
 plt.ylabel('Salary')
 plt.show()
+
+# predicting salary of 12 year old employee
+print(f"Salary of 12 year old employee = {linear_regression.predict([[12]])}")
+
+# getting the regression coefficient and intercept
+# equation becomes salary = linear_regression.intercept_ + linear_regression.coef_ * experience   
+print(linear_regression.coef_)
+print(linear_regression.intercept_)
