@@ -61,7 +61,58 @@
 # step 4: no new variables can enter and no old variables can exit
 # if step 4 satisfied then model is ready
 # 
-# All possible models: 
+# e. All possible models: 
 # step 1: select a criterion of goodness (eg akaike criterion)
 # step 2: construct all the possible regression models 2n - 1 total combinations
 # step 3: select the one with best criterion and your model is ready
+# 
+# backward elimination is the fastest approach to train the model
+
+# Importing the libraries
+from audioop import mul
+from attr import dataclass
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Importing the dataset
+data_set = pd.read_csv("50_Startups.csv")
+x = data_set.iloc[:, :-1].values
+y = data_set.iloc[:, -1].values
+
+# Encoding the data
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+column_transformer = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [3])], remainder='passthrough') 
+x = np.array(column_transformer.fit_transform(x))
+print(x)
+
+# multiple linear regression doesnt require feature scaling as the coefficients compensate them
+# do we need to check the assumptions of linear regression? -> no. whenever you have 
+
+# Splitting the dataset into train and test set
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+# we do not have to do anything to avoid the dummy variable trap. the class which we are going to import will take care of the dummy variable trap
+# class takes care will automatically identify the  variables with highest P values and uses backward elimination technique behind the scenes  
+
+# Training the multiple linear regression model on training set
+from sklearn.linear_model import LinearRegression
+multiple_linear_regression_regressor = LinearRegression()
+multiple_linear_regression_regressor.fit(x_train, y_train)
+
+# plotting the graphs for multiple linear regression is not physible hence we will draw 2 vectors corresponding to check if the predicted results and test set results match
+# Predict the Test set results
+y_pred = multiple_linear_regression_regressor.predict(x_test)
+np.set_printoptions(precision=2)
+print(np.concatenate((y_pred.reshape(len(y_pred), 1), y_test.reshape(len(y_test), 1)), axis=1))
+
+# predicting the values for single startup
+print(multiple_linear_regression_regressor.predict([[1, 0, 0, 160000, 130000, 300000]]))
+
+# get the final linear regression equation with values of the coefficients
+print(multiple_linear_regression_regressor.coef_)
+print(multiple_linear_regression_regressor.intercept_)
+
+# concatenate is used to join 2 vectors and reshape is used to make vector vertical
