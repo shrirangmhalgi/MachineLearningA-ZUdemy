@@ -63,5 +63,3 @@ plt.xlabel('Position Level')
 plt.ylabel('Salary')
 plt.title('Truth or Bluff (Support Vector Regression)')
 plt.show()
-
-
