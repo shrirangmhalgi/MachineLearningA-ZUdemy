@@ -13,3 +13,12 @@
 # yes. SSres fits your data than the average line (it is hard)
 
 # Adjusted R^2
+# same thing applies to multiple linear regression
+# SSres -> minimization is done
+# R^2 is the goodness of fit (the greater it it the better)
+# Problem: it starts to break when we add more and more variables
+# once we add a new variable to model, it affects the model, the fact we are trying to minimize the sum of residuals is that either the new variable will help to minimize the sum, or it stays same
+# Adj R^2 = 1 - (1 - R^2) * [(n - 1) / (n - p - 1)]
+# p = number of regressors
+# n = sample size
+# Adj R^2 method penalizes you if you add independent variables that dont affect the model  
